@@ -51,7 +51,8 @@ export async function POST(request: NextRequest) {
     console.log('Environment check:', { 
       supabaseUrl: supabaseUrl ? 'set' : 'missing', 
       supabaseKey: supabaseKey ? 'set' : 'missing',
-      adminPassword: adminPassword ? 'set' : 'missing'
+      adminPassword: adminPassword ? 'set' : 'missing',
+      supabaseUrlValue: supabaseUrl?.substring(0, 30) + '...' // 最初の30文字のみ表示
     })
     
     // パスワードチェック
@@ -73,6 +74,14 @@ export async function POST(request: NextRequest) {
     if (!supabaseUrl || !supabaseKey) {
       return NextResponse.json(
         { error: 'Supabase設定が不足しています' },
+        { status: 500 }
+      )
+    }
+    
+    // プレースホルダー値のチェック
+    if (supabaseUrl.includes('your-project') || supabaseUrl.includes('example')) {
+      return NextResponse.json(
+        { error: 'Supabase URLがプレースホルダー値です。正しいURLを設定してください。' },
         { status: 500 }
       )
     }
