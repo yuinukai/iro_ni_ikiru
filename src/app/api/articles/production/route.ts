@@ -40,13 +40,21 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, content, category, published, password } = body
+    const { title, content, category, published, password, authCheck } = body
     
     // 簡易的な認証チェック
     if (password !== process.env.ADMIN_PASSWORD) {
       return NextResponse.json(
         { error: '認証エラー: パスワードが正しくありません' },
         { status: 401 }
+      )
+    }
+    
+    // 認証チェックのみの場合
+    if (authCheck) {
+      return NextResponse.json(
+        { authSuccess: true, message: '認証成功' },
+        { status: 200 }
       )
     }
     
