@@ -2,7 +2,15 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 // データベースを初期化するAPI（本番環境での初回実行用）
+export async function GET() {
+  return initializeDatabase();
+}
+
 export async function POST() {
+  return initializeDatabase();
+}
+
+async function initializeDatabase() {
   try {
     // テーブルが存在するかチェック
     await prisma.$executeRaw`CREATE TABLE IF NOT EXISTS "articles" (
