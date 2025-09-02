@@ -1,16 +1,39 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navigation from '@/components/Navigation';
 
-export default function SimpleAdminPage() {
+interface Article {
+  id: string;
+  title: string;
+  content: string;
+  excerpt?: string;
+  slug: string;
+  published: boolean;
+  featured: boolean;
+  category?: string;
+  tags: string[];
+  imageUrl?: string;
+  author: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt?: Date;
+}
+
+export default function LocalStorageAdminPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
   const [published, setPublished] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+
+  const saveArticleToLocalStorage = (article: Article) => {
+    const existingArticles = JSON.parse(localStorage.getItem('articles') || '[]');
+    existingArticles.push(article);
+    localStorage.setItem('articles', JSON.stringify(existingArticles));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,34 +47,45 @@ export default function SimpleAdminPage() {
     setMessage('');
 
     try {
-      const response = await fetch('/api/articles/simple', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title,
-          content,
-          category,
-          published
-        })
-      });
+      const slug = title.toLowerCase()
+        .replace(/[^a-z0-9\\s-]/g, '')
+        .replace(/\\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim() + '-' + Date.now();
 
-      const data = await response.json();
+      const newArticle: Article = {
+        id: Date.now().toString(),
+        title,
+        content,
+        excerpt: content.substring(0, 100) + '...',
+        slug,
+        published: !!published,
+        featured: false,
+        category: category || '',
+        tags: [],
+        imageUrl: 'https://via.placeholder.com/400x300?text=Article+Image',
+        author: '管理者',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        publishedAt: published ? new Date() : undefined
+      };
 
-      if (response.ok) {
-        setMessage('記事を作成しました！記事ページで確認してください。');
-        // フォームをリセット
-        setTitle('');
-        setContent('');
-        setCategory('');
-        setPublished(false);
-        
-        // 記事作成成功後、記事一覧ページにリダイレクト
-        setTimeout(() => {
-          window.location.href = '/articles';
-        }, 2000);
-      } else {
-        setMessage(`エラー: ${data.error}`);
-      }
+      // ローカルストレージに保存
+      saveArticleToLocalStorage(newArticle);
+      
+      setMessage('記事をローカルに保存しました！記事一覧ページで確認してください。');
+      
+      // フォームをリセット
+      setTitle('');
+      setContent('');
+      setCategory('');
+      setPublished(false);
+      
+      // 記事一覧ページにリダイレクト
+      setTimeout(() => {
+        window.location.href = '/articles/localStorage';
+      }, 2000);
+
     } catch (error) {
       setMessage(`エラー: ${error}`);
     } finally {
@@ -70,7 +104,7 @@ export default function SimpleAdminPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            記事作成（シンプル版）
+            記事作成（ローカル保存版）
           </motion.h1>
 
           {message && (
