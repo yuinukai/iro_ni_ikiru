@@ -1,0 +1,28 @@
+// 本番環境用のPrisma設定（PostgreSQL）
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  content     String   @db.Text
+  excerpt     String?  @db.Text
+  slug        String   @unique
+  published   Boolean  @default(false)
+  featured    Boolean  @default(false)
+  category    String?
+  tags        String?  @db.Text // JSON stringとして保存
+  imageUrl    String?
+  author      String   @default("管理者")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  publishedAt DateTime?
+
+  @@map("articles")
+}

@@ -1,8 +1,91 @@
 @import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Shrikhand&family=Bungee&family=Rubik+Glitch&family=Creepster&family=Butcherman&family=Press+Start+2P&family=Noto+Serif+JP:wght@400;700&display=swap');
+
+.press-start-2p-regular {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Press Start 2Pフォント用ボタン最適化クラス */
+.press-start-2p-button {
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.6;
+  letter-spacing: 0.05em;
+  /* ボタン内のテキストが均等に配置されるよう調整 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 最小の高さを確保してテキストが切れないようにする */
+  min-height: 2.5rem;
+}
+
+.press-start-2p-button.text-sm {
+  font-size: 0.75rem;
+  min-height: 2.25rem;
+  padding: 0.5rem 1rem;
+}
+
+.press-start-2p-button.text-base {
+  font-size: 0.875rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.25rem;
+}
+
+.press-start-2p-button.text-lg {
+  font-size: 1rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
+}
+
+/* ソーシャルメディアボタン専用スタイル */
+.social-button-youtube {
+  background: #FF0000;
+  color: white;
+  border: 2px solid #CC0000;
+}
+
+.social-button-youtube:hover {
+  background: #CC0000;
+  transform: translateY(-2px);
+}
+
+.social-button-instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  color: white;
+  border: 2px solid #bc1888;
+}
+
+.social-button-instagram:hover {
+  background: linear-gradient(45deg, #e6683c 0%, #dc2743 25%, #cc2366 50%, #bc1888 75%, #8b0a6b 100%);
+  transform: translateY(-2px);
+}
+
+.social-button-post {
+  background: #1a1a1a;
+  color: white;
+  border: 2px solid #000000;
+}
+
+.social-button-post:hover {
+  background: #000000;
+  transform: translateY(-2px);
+}
+
+/* 古風な日本語フォント */
+.classical-japanese {
+  font-family: "Noto Serif JP", "Yu Mincho", "YuMincho", "Hiragino Mincho Pro", "MS PMincho", serif;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.1em;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -10,17 +93,107 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-press-start: var(--font-press-start-2p);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #000000;
+    --foreground: #ffffff;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: white;
+  color: black;
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: 'Bungee', cursive;
+}
+
+.site-title {
+  font-family: 'Shrikhand', cursive;
+  color: black;
+}
+
+.glitch-text {
+  font-family: 'Rubik Glitch', cursive;
+}
+
+.punk-button {
+  position: relative;
+  padding: 12px 24px;
+  font-weight: bold;
+  color: black;
+  background: #f5f5f5;
+  transition: all 0.3s ease;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.punk-button:hover {
+  background: #e5e5e5;
+}
+
+.punk-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.punk-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.neon-border {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.spray-text {
+  position: relative;
+  color: black;
+}
+
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+::selection {
+  background: rgba(0, 0, 0, 0.1);
+  color: black;
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
