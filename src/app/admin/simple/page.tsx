@@ -24,36 +24,50 @@ export default function SimpleAdminPage() {
     setMessage('');
 
     try {
-      const response = await fetch('/api/articles/simple', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title,
-          content,
-          category,
-          published
-        })
-      });
+      // ローカルストレージに直接保存
+      const slug = title.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim() + '-' + Date.now();
 
-      const data = await response.json();
+      const newArticle = {
+        id: Date.now().toString(),
+        title,
+        content,
+        excerpt: content.substring(0, 100) + '...',
+        slug,
+        published: !!published,
+        featured: false,
+        category: category || '',
+        tags: [],
+        imageUrl: 'https://via.placeholder.com/400x300?text=Article+Image',
+        author: '管理者',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        publishedAt: published ? new Date().toISOString() : undefined
+      };
 
-      if (response.ok) {
-        setMessage('記事を作成しました！記事ページで確認してください。');
-        // フォームをリセット
-        setTitle('');
-        setContent('');
-        setCategory('');
-        setPublished(false);
-        
-        // 記事作成成功後、記事一覧ページにリダイレクト
-        setTimeout(() => {
-          window.location.href = '/articles';
-        }, 2000);
-      } else {
-        setMessage(`エラー: ${data.error}`);
-      }
+      const existingArticles = JSON.parse(localStorage.getItem('articles') || '[]');
+      existingArticles.push(newArticle);
+      localStorage.setItem('articles', JSON.stringify(existingArticles));
+      
+      console.log('Article saved successfully:', newArticle.title);
+      setMessage('記事をローカルストレージに保存しました！');
+      
+      // フォームをリセット
+      setTitle('');
+      setContent('');
+      setCategory('');
+      setPublished(false);
+      
+      // 記事一覧ページにリダイレクト
+      setTimeout(() => {
+        window.location.href = '/articles/simple';
+      }, 2000);
     } catch (error) {
-      setMessage(`エラー: ${error}`);
+      console.error('Article creation error:', error);
+      setMessage(`エラー: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
     } finally {
       setLoading(false);
     }
