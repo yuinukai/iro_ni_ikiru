@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 // シンプルなメモリ内データストア（Vercel対応）
-let articles: Array<{
+const articles: Array<{
   id: string
   title: string
   content: string
@@ -54,8 +54,7 @@ export async function GET() {
       page: 1,
       limit: 10
     })
-  } catch (error) {
-    console.error('Error fetching articles:', error)
+  } catch {
     return NextResponse.json(
       { error: 'Failed to fetch articles' },
       { status: 500 }
