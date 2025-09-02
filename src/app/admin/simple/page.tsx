@@ -3,10 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navigation from '@/components/Navigation';
-import { useRouter } from 'next/navigation';
 
 export default function SimpleAdminPage() {
-  const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -18,11 +16,11 @@ export default function SimpleAdminPage() {
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
     if (!token) {
-      router.push('/login');
+      window.location.href = '/login';
     } else {
       setIsAuthenticated(true);
     }
-  }, [router]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
