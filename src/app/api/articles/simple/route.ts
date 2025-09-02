@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 // シンプルなメモリ内データストア（Vercel対応）
-let articles: Array<{
+const articles: Array<{
   id: string
   title: string
   content: string
