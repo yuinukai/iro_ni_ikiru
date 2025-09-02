@@ -1,26 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Navigation from '@/components/Navigation';
 
 export default function SimpleAdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
   const [published, setPublished] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      window.location.href = '/login';
-    } else {
-      setIsAuthenticated(true);
-    }
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,20 +53,6 @@ export default function SimpleAdminPage() {
       setLoading(false);
     }
   };
-
-  if (!isAuthenticated) {
-    return (
-      <>
-        <Navigation />
-        <main className="min-h-screen pt-20 pb-20 bg-white text-black flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
-            <p className="text-lg press-start-2p-regular">認証確認中...</p>
-          </div>
-        </main>
-      </>
-    );
-  }
 
   return (
     <>
