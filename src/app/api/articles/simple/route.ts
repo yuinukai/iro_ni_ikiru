@@ -1,22 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// シンプルなメモリ内データストア（Vercel対応）
-const articles: Array<{
-  id: string
-  title: string
-  content: string
-  excerpt?: string
-  slug: string
-  published: boolean
-  featured: boolean
-  category?: string
-  tags: string[]
-  imageUrl?: string
-  author: string
-  createdAt: Date
-  updatedAt: Date
-  publishedAt?: Date
-}> = [
+// デモ用の固定記事データ
+const demoArticles = [
   {
     id: '1',
     title: 'いろにいきる！へようこそ',
@@ -39,18 +24,19 @@ const articles: Array<{
     tags: ['ウェルカム', '紹介', 'サイト'],
     imageUrl: 'https://via.placeholder.com/400x300?text=Welcome+Image',
     author: '管理者',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    publishedAt: new Date()
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    publishedAt: new Date().toISOString()
   }
 ]
 
-// GET /api/articles/simple - 記事一覧取得
+// GET /api/articles/simple - 記事一覧取得（デモ版）
 export async function GET() {
   try {
+    const publishedArticles = demoArticles.filter(article => article.published)
     return NextResponse.json({
-      articles: articles.filter(article => article.published),
-      total: articles.filter(article => article.published).length,
+      articles: publishedArticles,
+      total: publishedArticles.length,
       page: 1,
       limit: 10
     })
@@ -98,7 +84,7 @@ export async function POST(request: NextRequest) {
       publishedAt: published ? new Date() : undefined
     }
 
-    articles.push(newArticle)
+    // 記事追加は無効化（demoArticlesは読み取り専用）
 
     return NextResponse.json({
       ...newArticle,
