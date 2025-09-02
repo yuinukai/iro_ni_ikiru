@@ -6,9 +6,9 @@ import { Home, Zap, PenTool, Settings } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'ほーむ', icon: Home, color: '#FF1493' },
-  { href: '/articles/rich', label: 'きじいちらん', icon: Zap, color: '#32CD32' },
-  { href: '/admin/rich', label: 'りっちえでぃた', icon: PenTool, color: '#1E90FF' },
-  { href: '/admin/simple', label: 'しんぷるばん', icon: Settings, color: '#FFD700' },
+  { href: '/articles/production', label: 'きじいちらん', icon: Zap, color: '#32CD32' },
+  { href: '/admin/production', label: 'きじとうこう', icon: PenTool, color: '#1E90FF' },
+  { href: '/admin/simple', label: 'でもばん', icon: Settings, color: '#FFD700' },
 ];
 
 export default function Navigation() {
