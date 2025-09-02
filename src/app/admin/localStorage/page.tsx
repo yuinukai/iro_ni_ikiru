@@ -30,9 +30,15 @@ export default function LocalStorageAdminPage() {
   const [message, setMessage] = useState('');
 
   const saveArticleToLocalStorage = (article: Article) => {
-    const existingArticles = JSON.parse(localStorage.getItem('articles') || '[]');
-    existingArticles.push(article);
-    localStorage.setItem('articles', JSON.stringify(existingArticles));
+    try {
+      const existingArticles = JSON.parse(localStorage.getItem('articles') || '[]');
+      existingArticles.push(article);
+      localStorage.setItem('articles', JSON.stringify(existingArticles));
+      console.log('Article saved to localStorage:', article.title);
+    } catch (error) {
+      console.error('Failed to save to localStorage:', error);
+      throw error;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -48,8 +54,8 @@ export default function LocalStorageAdminPage() {
 
     try {
       const slug = title.toLowerCase()
-        .replace(/[^a-z0-9\\s-]/g, '')
-        .replace(/\\s+/g, '-')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .trim() + '-' + Date.now();
 
@@ -87,7 +93,8 @@ export default function LocalStorageAdminPage() {
       }, 2000);
 
     } catch (error) {
-      setMessage(`エラー: ${error}`);
+      console.error('Article creation error:', error);
+      setMessage(`エラー: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
     } finally {
       setLoading(false);
     }
