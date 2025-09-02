@@ -18,8 +18,8 @@ export default function Home() {
             transition={{ duration: 1.5 }}
           >
             <span className="block">Maybe...</span>
-            <span className="block">I'm just pure color,</span>
-            <span className="block">'cause damn, I glow.</span>
+            <span className="block">I&apos;m just pure color,</span>
+            <span className="block">&apos;cause damn, I glow.</span>
           </motion.h1>
           
           <motion.div 
