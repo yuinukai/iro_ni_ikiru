@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // 環境変数の確認
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const adminPassword = process.env.ADMIN_PASSWORD
+const adminPassword = process.env.ADMIN_PASSWORD || 'paint123' // デフォルト値
 
 // GET: 記事一覧取得
 export async function GET() {
@@ -47,8 +47,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { title, content, password } = body
     
+    console.log('Received request:', { title, content: content?.substring(0, 50), password: password ? '***' : 'empty' })
+    console.log('Environment check:', { 
+      supabaseUrl: supabaseUrl ? 'set' : 'missing', 
+      supabaseKey: supabaseKey ? 'set' : 'missing',
+      adminPassword: adminPassword ? 'set' : 'missing'
+    })
+    
     // パスワードチェック
     if (password !== adminPassword) {
+      console.log('Password mismatch:', { received: password, expected: adminPassword })
       return NextResponse.json(
         { error: 'パスワードが正しくありません' },
         { status: 401 }
@@ -99,9 +107,14 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const errorText = await response.text()
-      console.error('Supabase error:', errorText)
+      console.error('Supabase error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+        url: `${supabaseUrl}/rest/v1/articles`
+      })
       return NextResponse.json(
-        { error: 'データベースエラー', details: errorText },
+        { error: 'データベースエラー', details: errorText, status: response.status },
         { status: response.status }
       )
     }

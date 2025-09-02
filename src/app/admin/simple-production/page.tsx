@@ -45,7 +45,8 @@ export default function SimpleProductionAdminPage() {
         setContent('');
         setPassword('');
       } else {
-        setMessage(data.error || 'エラーが発生しました');
+        console.error('API Error:', data);
+        setMessage(data.error || `エラーが発生しました (${response.status})`);
         setMessageType('error');
       }
     } catch (error) {
