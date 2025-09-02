@@ -8,7 +8,6 @@ const navItems = [
   { href: '/', label: 'ほーむ', icon: Home, color: '#FF1493' },
   { href: '/articles/production', label: 'きじいちらん', icon: Zap, color: '#32CD32' },
   { href: '/admin/production', label: 'きじとうこう', icon: PenTool, color: '#1E90FF' },
-  { href: '/admin/simple', label: 'でもばん', icon: Settings, color: '#FFD700' },
 ];
 
 export default function Navigation() {
