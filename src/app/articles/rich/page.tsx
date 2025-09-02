@@ -154,8 +154,9 @@ export default function RichArticlesPage() {
           )}
 
           <div className="prose max-w-none">
-            <MDEditor.Markdown 
-              source={article.content} 
+            <div 
+              className="markdown-content"
+              dangerouslySetInnerHTML={{ __html: article.content.replace(/\n/g, '<br>') }}
               style={{ 
                 backgroundColor: 'white',
                 color: 'black'
