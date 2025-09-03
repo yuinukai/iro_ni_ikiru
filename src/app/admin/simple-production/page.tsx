@@ -43,11 +43,13 @@ export default function SimpleProductionAdminPage() {
     try {
       const response = await fetch('/api/articles/simple-production', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Admin-Auth': 'authenticated' // 認証済みを示すヘッダー
+        },
         body: JSON.stringify({
           title,
-          content,
-          password: 'paint123' // 認証済みなので固定パスワードを使用
+          content
         })
       });
 
