@@ -7,7 +7,7 @@ import { Home, Zap, PenTool, Settings } from 'lucide-react';
 const navItems = [
   { href: '/', label: 'ほーむ', icon: Home, color: '#FF1493' },
   { href: '/articles/simple-production', label: 'きじいちらん', icon: Zap, color: '#32CD32' },
-  { href: '/admin/auth', label: 'きじとうこう', icon: PenTool, color: '#1E90FF' },
+  { href: '/admin/simple-production', label: 'きじとうこう', icon: PenTool, color: '#1E90FF' },
 ];
 
 export default function Navigation() {
