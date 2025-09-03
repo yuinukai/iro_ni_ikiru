@@ -125,10 +125,17 @@ export async function POST(request: NextRequest) {
         status: response.status,
         statusText: response.statusText,
         error: errorText,
-        url: `${supabaseUrl}/rest/v1/articles`
+        url: `${supabaseUrl}/rest/v1/articles`,
+        requestBody: newArticle
       })
       return NextResponse.json(
-        { error: 'データベースエラー', details: errorText, status: response.status },
+        { 
+          error: 'データベースエラー', 
+          details: errorText, 
+          status: response.status,
+          supabaseUrl: supabaseUrl?.substring(0, 50) + '...',
+          requestData: newArticle
+        },
         { status: response.status }
       )
     }
