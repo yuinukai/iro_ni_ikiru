@@ -45,24 +45,14 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { title, content, password } = body
+    const { title, content } = body
     
-    console.log('Received request:', { title, content: content?.substring(0, 50), password: password ? '***' : 'empty' })
+    console.log('Received request:', { title, content: content?.substring(0, 50) })
     console.log('Environment check:', { 
       supabaseUrl: supabaseUrl ? 'set' : 'missing', 
       supabaseKey: supabaseKey ? 'set' : 'missing',
-      adminPassword: adminPassword ? 'set' : 'missing',
       supabaseUrlValue: supabaseUrl?.substring(0, 30) + '...' // 最初の30文字のみ表示
     })
-    
-    // パスワードチェック（環境変数または固定パスワード）
-    if (password !== adminPassword && password !== 'paint123') {
-      console.log('Password mismatch:', { received: password, expected: adminPassword })
-      return NextResponse.json(
-        { error: 'パスワードが正しくありません' },
-        { status: 401 }
-      )
-    }
     
     if (!title || !content) {
       return NextResponse.json(

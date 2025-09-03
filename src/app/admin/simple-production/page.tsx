@@ -7,7 +7,6 @@ import Navigation from '@/components/Navigation';
 export default function SimpleProductionAdminPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState<'success' | 'error'>('success');
@@ -15,8 +14,8 @@ export default function SimpleProductionAdminPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!title || !content || !password) {
-      setMessage('すべての項目を入力してください');
+    if (!title || !content) {
+      setMessage('タイトルと内容を入力してください');
       setMessageType('error');
       return;
     }
@@ -30,8 +29,7 @@ export default function SimpleProductionAdminPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title,
-          content,
-          password
+          content
         })
       });
 
@@ -43,7 +41,6 @@ export default function SimpleProductionAdminPage() {
         // フォームをリセット
         setTitle('');
         setContent('');
-        setPassword('');
       } else {
         console.error('API Error:', data);
         setMessage(data.error || `エラーが発生しました (${response.status})`);
@@ -106,19 +103,6 @@ export default function SimpleProductionAdminPage() {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-bold mb-2">
-                管理者パスワード
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded"
-                placeholder="パスワードを入力"
-              />
-            </div>
-
             <button
               type="submit"
               disabled={loading}
@@ -132,8 +116,8 @@ export default function SimpleProductionAdminPage() {
 
           <div className="mt-8 p-4 bg-gray-100 rounded">
             <p className="text-sm text-gray-600">
-              テスト用のシンプルな投稿フォームです。
-              パスワード: paint123
+              シンプルな記事投稿フォームです。
+              タイトルと内容を入力して記事を投稿できます。
             </p>
           </div>
         </div>
