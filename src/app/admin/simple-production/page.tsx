@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navigation from '@/components/Navigation';
 import RichTextEditor from '@/components/RichTextEditor';
+import ImageUpload from '@/components/ImageUpload';
 
 export default function SimpleProductionAdminPage() {
   const [title, setTitle] = useState('');
@@ -176,15 +177,23 @@ export default function SimpleProductionAdminPage() {
                   {/* サムネイル画像 */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      サムネイル画像URL
+                      サムネイル画像
                     </label>
-                    <input
-                      type="url"
-                      value={thumbnail}
-                      onChange={(e) => setThumbnail(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="https://example.com/image.jpg"
-                    />
+                    <div className="space-y-3">
+                      <input
+                        type="url"
+                        value={thumbnail}
+                        onChange={(e) => setThumbnail(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="https://example.com/image.jpg または下のボタンでアップロード"
+                      />
+                      <div className="text-center text-gray-500 text-sm">または</div>
+                      <ImageUpload
+                        onUpload={setThumbnail}
+                        buttonText="サムネイル画像をアップロード"
+                        showPreview={true}
+                      />
+                    </div>
                   </div>
 
                   {/* ボタン群 */}

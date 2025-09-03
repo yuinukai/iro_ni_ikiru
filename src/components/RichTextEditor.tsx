@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import ImageUpload from './ImageUpload';
 
 interface RichTextEditorProps {
   value: string;
@@ -10,6 +11,7 @@ interface RichTextEditorProps {
 
 export default function RichTextEditor({ value, onChange, placeholder }: RichTextEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
+  const [showImageUpload, setShowImageUpload] = useState(false);
 
   const execCommand = (command: string, value?: string) => {
     document.execCommand(command, false, value);
@@ -28,6 +30,11 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
     const text = e.clipboardData.getData('text/plain');
     document.execCommand('insertText', false, text);
     updateContent();
+  };
+
+  const handleImageUpload = (url: string) => {
+    execCommand('insertImage', url);
+    setShowImageUpload(false);
   };
 
   return (
@@ -188,10 +195,7 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
 
         {/* 画像挿入 */}
         <button
-          onClick={() => {
-            const url = prompt('画像URLを入力してください:');
-            if (url) execCommand('insertImage', url);
-          }}
+          onClick={() => setShowImageUpload(!showImageUpload)}
           className="px-2 py-1 border border-gray-300 rounded text-sm hover:bg-gray-200"
           title="画像挿入"
         >
@@ -219,6 +223,17 @@ export default function RichTextEditor({ value, onChange, placeholder }: RichTex
           ↷
         </button>
       </div>
+
+      {/* 画像アップロードエリア */}
+      {showImageUpload && (
+        <div className="bg-blue-50 border-b border-gray-300 p-3">
+          <ImageUpload
+            onUpload={handleImageUpload}
+            buttonText="画像をアップロードして挿入"
+            showPreview={false}
+          />
+        </div>
+      )}
 
       {/* エディタエリア */}
       <div
