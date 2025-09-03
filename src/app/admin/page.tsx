@@ -469,9 +469,8 @@ export default function AdminPage() {
                 </div>
 
                 <ImageUpload
-                  onImageUploaded={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
-                  currentImage={formData.imageUrl}
-                  onImageRemoved={() => setFormData(prev => ({ ...prev, imageUrl: '' }))}
+                  onUpload={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                  showPreview={true}
                 />
 
                 <div className="flex items-center space-x-6">
