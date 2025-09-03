@@ -46,9 +46,8 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { title, content, password } = body
-    const adminAuth = request.headers.get('X-Admin-Auth')
     
-    console.log('Received request:', { title, content: content?.substring(0, 50), hasPassword: !!password, hasAuthHeader: !!adminAuth })
+    console.log('Received request:', { title, content: content?.substring(0, 50), password: password ? '***' : 'empty' })
     console.log('Environment check:', { 
       supabaseUrl: supabaseUrl ? 'set' : 'missing', 
       supabaseKey: supabaseKey ? 'set' : 'missing',
@@ -56,15 +55,11 @@ export async function POST(request: NextRequest) {
       supabaseUrlValue: supabaseUrl?.substring(0, 30) + '...' // 最初の30文字のみ表示
     })
     
-    // 認証チェック（認証ヘッダーまたはパスワード）
-    const isAuthenticated = adminAuth === 'authenticated' || 
-                           password === adminPassword || 
-                           password === 'paint123'
-    
-    if (!isAuthenticated) {
-      console.log('Authentication failed:', { adminAuth, password: password ? '***' : 'empty' })
+    // パスワードチェック
+    if (password !== adminPassword) {
+      console.log('Password mismatch:', { received: password, expected: adminPassword })
       return NextResponse.json(
-        { error: '認証が必要です' },
+        { error: 'パスワードが正しくありません' },
         { status: 401 }
       )
     }
