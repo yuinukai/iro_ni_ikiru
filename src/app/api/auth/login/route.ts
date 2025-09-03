@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { verifyPassword } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,21 +11,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const isValid = await verifyPassword(password)
-
-    if (!isValid) {
+    // シンプルなパスワード認証
+    const adminPassword = process.env.ADMIN_PASSWORD || 'paint123'
+    
+    if (password !== adminPassword) {
       return NextResponse.json(
         { error: 'パスワードが間違っています' },
         { status: 401 }
       )
     }
 
-    // 認証トークンを生成
-    const token = process.env.ADMIN_TOKEN || 'admin-token-2024'
-
     return NextResponse.json({
       success: true,
-      token,
       message: 'ログインしました'
     })
   } catch (error) {
