@@ -55,8 +55,8 @@ export async function POST(request: NextRequest) {
       supabaseUrlValue: supabaseUrl?.substring(0, 30) + '...' // 最初の30文字のみ表示
     })
     
-    // パスワードチェック
-    if (password !== adminPassword) {
+    // パスワードチェック（環境変数または固定パスワード）
+    if (password !== adminPassword && password !== 'paint123') {
       console.log('Password mismatch:', { received: password, expected: adminPassword })
       return NextResponse.json(
         { error: 'パスワードが正しくありません' },
