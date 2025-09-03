@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Navigation from '@/components/Navigation';
+import RichTextEditor from '@/components/RichTextEditor';
 
 export default function SimpleProductionAdminPage() {
   const [title, setTitle] = useState('');
@@ -18,9 +19,10 @@ export default function SimpleProductionAdminPage() {
   const [messageType, setMessageType] = useState<'success' | 'error'>('success');
   const [charCount, setCharCount] = useState(0);
 
-  // 文字数カウンター
+  // 文字数カウンター（HTMLタグを除いたテキスト）
   useEffect(() => {
-    setCharCount(content.length);
+    const textContent = content.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+    setCharCount(textContent.length);
   }, [content]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -164,12 +166,10 @@ export default function SimpleProductionAdminPage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       内容 <span className="text-gray-500">({charCount}文字)</span>
                     </label>
-                    <textarea
+                    <RichTextEditor
                       value={content}
-                      onChange={(e) => setContent(e.target.value)}
-                      rows={12}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="記事の内容を入力してください"
+                      onChange={setContent}
+                      placeholder="記事の内容を入力してください（リッチテキストエディタ）"
                     />
                   </div>
 
